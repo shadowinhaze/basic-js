@@ -14,10 +14,15 @@ import { NotImplementedError } from '../extensions/index.js';
 export default function sortByHeight(arr) {
   let indexOfException = [];
   arr.forEach(( item, index ) => {
-    if (item === -1) {
+      if (item === -1) {
       indexOfException.push(index)
-      arr.splice(index,1)
-    }
-  }).sort((a, b) => b - a)
+      }
+  })
+  arr.sort((a, b) => a - b);
   
+  for (let i = indexOfException.length - 1; i >= 0; i--) {
+      arr.splice(arr.indexOf(-1), 1);
+      arr.splice(indexOfException[i], 0, -1);
+  }
+  return arr
 }
