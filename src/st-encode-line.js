@@ -10,7 +10,12 @@ import { NotImplementedError } from '../extensions/index.js';
  * For aabbbc should return 2a3bc
  *
  */
-export default function encodeLine(/* str */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+export default function encodeLine(str) {
+  return str.replace(/(.)\1*/g, ((match, p1) => {
+    if (match.length == 1) {
+        return p1;
+    } else {
+        return match.length + p1;
+    }   
+}))
 }
