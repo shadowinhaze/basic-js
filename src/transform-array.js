@@ -13,40 +13,46 @@ import { NotImplementedError } from '../extensions/index.js';
  * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
  * 
  */
-export default function transform(/* arr */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
-  // if (!Array.isArray(arr)) throw new Error('\'arr\' parameter must be an instance of the Array!');
-  // let newArr = arr.splice();
-
-  // newArr.forEach((item, index, array) => {
-  //     if (typeof item === 'string') {
-  //         if (array.includes('--discard-next') && array.includes('--double-prev')) {
-  //             return newArr.splice(index,3)
-  //         }
-  //         if (array.includes('--discard-next') && array.includes('--discard-prev')) {
-  //             return newArr.splice(index,3)
-  //         }
-  //         if (item.includes('prev') && index == 0) {
-  //             return newArr.splice(0,1)
-  //         }
-  //         if (item.includes('next') && index == array.length - 1) {
-  //             return newArr.splice(index,1)
-  //         }
-  //         if (item.includes('double-next')) {
-  //             return newArr.splice(index, 1, array[index+1])
-  //         }
-  //         if (item.includes('double-prev')) {
-  //             return newArr.splice(index, 1, array[index-1])
-  //         }
-  //         if (item.includes('discard-next')) {
-  //             return newArr.splice(index, 2)
-  //         }
-  //         if (item.includes('discard-prev')) {
-  //             return newArr.splice(index-1, 2)
-  //         }
-  //     }
-  // })
-
-  // return newArr;
+export default function transform(arr) {
+  // throw new NotImplementedError('Not implemented');
+  // // remove line with error and write your code here
+  if (!Array.isArray(arr)) throw new Error('\'arr\' parameter must be an instance of the Array!');
+  let newArr = [...arr];
+  newArr.forEach((item, index, array) => {
+      if (typeof item === 'string') {
+          switch (true) {
+              case item.includes('prev') && index == 0:
+                  newArr.splice(0, 1)
+                  break;
+              case item.includes('next') && index == array.length - 1:
+                  newArr.splice(index, 1)
+                  break;
+              case item.includes('--discard-next') && array.includes('--double-prev'):
+                  newArr.splice(index, 3)
+                  break;
+              case item.includes('--discard-next') && array.includes('--discard-prev'):
+                  newArr.splice(index, 3)
+                  break;
+              case item.includes('--double-next') && array.includes('--double-prev'):
+                  newArr.splice(index, 3, array[index +1], array[index +1], array[index +1])
+                  break;
+              case item.includes('--double-next') && array.includes('--discard-prev'):
+                  newArr.splice(index, 3, array[index +1])
+                  break;
+              case item.includes('double-next'):
+                  newArr.splice(index, 1, array[index + 1])
+                  break;
+              case item.includes('double-prev'):
+                  newArr.splice(index, 1, array[index - 1])
+                  break;
+              case item.includes('discard-next'):
+                  newArr.splice(index, 2)
+                  break;
+              case item.includes('discard-prev'):
+                  newArr.splice(index - 1, 2)
+                  break;
+          }
+      }
+  })
+  return newArr;
 }
